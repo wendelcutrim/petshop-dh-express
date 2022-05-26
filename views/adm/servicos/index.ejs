@@ -8,8 +8,6 @@
     <title>PETSHOP DH</title>
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
-
 </head>
 
 <body>
@@ -20,13 +18,12 @@
         <section class="servicos-lista">
             <div class="container">
                 <h1>Serviços</h1>
-                <a href="/adm/cadastro" class="btn btn-primary mb-2">Cadastrar</a>
-
-                <table class="table table-dark table-striped table-dbordered">
+                <a href="/adm/servicos/cadastro" class="btn btn-primary mb-5" >Cadastrar</a>
+                <table class="table table-dark table-striped table-bordered ">
                     <thead>
                       <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Imagem</th>
+                        <th scope="col">Identificador</th>
+                        <th scope="col">imagem</th>
                         <th scope="col">Nome</th>
                         <th scope="col">Preço</th>
                         <th scope="col">Ativo</th>
@@ -34,21 +31,26 @@
                       </tr>
                     </thead>
                     <tbody>
-                        <% servicos.forEach(servico => { %>
+                        <% servicos.forEach(servico => { %> 
                             <tr>
-                                <th scope="row"><%= servico.id %></th>
-                                <td><img class="thumb" src="<%= servico.imagem %>" width="100px" height="100px" alt=""></td>
+                                <th scope="row"> <%= servico.id %></th>
+                                <td><img class="thumb" src="<%= servico.imagem %>" alt="" width="100px" height="100px"></td>
                                 <td><%= servico.nome %></td>
                                 <td><%= servico.preco %></td>
                                 <td><%= servico.ativo ? "Habilitado" : "Desabilitado" %></td>
                                 <td>
-                                    <button type="button" class="btn btn-secondary">Editar</button>
-                                    <button type="button" class="btn btn-danger">Deletar</button>
+                                    <a href="/adm/servicos/<%= servico.id %>" type="button" class="btn btn-primary">Abrir</a>
+                                    <a href="/adm/servicos/<%= servico.id %>/editar" type="button" class="btn btn-secondary">Editar</a>
+                                    <form action="/adm/servicos/<%= servico.id %>?_method=DELETE" method="POST">
+                                        <button type="submit" class="btn btn-danger">Excluir</button>
+                                    </form>
                                 </td>
-                              </tr>
-                        <% }) %>
+                            </tr>
+                        <% }) %> 
+
                     </tbody>
                   </table>
+ 
 
 
             </div>

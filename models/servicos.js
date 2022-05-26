@@ -1,14 +1,18 @@
+// responsavel por realizar as operações de CRUD no banco de dados
 const fs = require('fs');
 const { v4: geradorDeId } = require('uuid');
 
-function open () {
-    let content = fs.readFileSync("./db.json", "utf8");
-    const db = JSON.parse(content);
+// geradorDeId(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+
+function open() {
+    let content = fs.readFileSync("./db.json", "utf8")
+    const db = JSON.parse(content); // de texto json para js
     return db;
 }
 
-function store (db) {
-    fs.writeFileSync("./db.json", content, "uft8");
+function store(db) {
+    content = JSON.stringify(db); // de js para texto json
+    fs.writeFileSync("./db.json", content, "utf8", null, 4)
 }
 
 const Servico = {
@@ -23,13 +27,13 @@ const Servico = {
     },
     save: (servico) => {
         const db = open();
-        servico.id = geradorDeId();
+        servico.id = geradorDeId(); // gerando um id para meu novo serviço
         db.servicos.push(servico);
+        store(db);
     },
     update: (id, servicoAtualizado) => {
         const db = open();
-        let servico = db.servicos.find(servico => servico.id == id);
-        const index = servico.indexOf(servico);
+        const index = db.servicos.findIndex(servico => servico.id == id);
         db.servicos[index] = servicoAtualizado;
         store(db);
     },
@@ -38,7 +42,7 @@ const Servico = {
         const index = db.servicos.findIndex(servico => servico.id == id);
         db.servicos.splice(index, 1);
         store(db);
-    },
+    }
 }
 
-module.exports = Servico
+module.exports = Servico;

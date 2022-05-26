@@ -1,4 +1,4 @@
-const db = require('../db.json')
+const Servico = require('../models/servico');
 
 const homeController = {
     index: (req, res) => {
@@ -9,7 +9,7 @@ const homeController = {
         res.render('home/sobre');
     },
     servicos: (req, res) => {
-        const servicos = db.servicos;
+        const servicos = Servico.findAll();
         res.render('home/servicos', { servicos });  
     },
     login: (req, res) => {
@@ -18,3 +18,4 @@ const homeController = {
 }
 
 module.exports = homeController;
+

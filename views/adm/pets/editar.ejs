@@ -19,22 +19,22 @@
             <div class="container">
                 <h1>Atualização de Pets</h1>
 
-                <a href="/adm/pets" class="btn btn-primary mb-2" >Lista de Pets</a>
+                <a href="" class="btn btn-primary mb-2" >Lista de Pets</a>
 
-                <form method="POST" action="/adm/pets/<%= pet.id %>?_method=PUT" >
+                <form>
                     <div class="mb-3">
                       <label for="" class="form-label">Imagem</label>
-                      <input type="text" name="imagem" value="<%= pet.imagem %>" class="form-control" >
+                      <input type="text" name="imagem" class="form-control" >
                     </div>
 
                     <div class="mb-3">
                       <label for="" class="form-label">Nome</label>
-                      <input type="text" name="nome" value="<%= pet.nome %>" class="form-control" >
+                      <input type="text" name="nome" class="form-control" >
                     </div>
 
                     <div class="mb-3">
                       <label for="" class="form-label">Especie</label>
-                      <input type="text" name="especie" value="<%= pet.especie %>" class="form-control"  >
+                      <input type="text" name="especie" class="form-control"  >
                     </div>
 
                     <button type="submit" class="btn btn-primary">Salvar</button>

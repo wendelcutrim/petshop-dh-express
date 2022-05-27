@@ -17,7 +17,7 @@ app.use(petsRouter);
 app.use(servicosRouter);
 
 app.use((req, res, next) => {
-    return res.status(404).render('errors', {error: "Página não encontrada"});
+    return res.status(404).render('errors', {error: "Página não encontrada", img: "https://img.freepik.com/vetores-gratis/erro-404-modelo-web-com-caozinho-bonito_23-2147763344.jpg"});
 });
 
 app.listen(3000, () => console.log('Rodando...'))

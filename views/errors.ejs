@@ -8,6 +8,20 @@
     <title>PETSHOP DH</title>
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+        .img-error {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+
+        }
+
+        .img-error img {
+            max-height: 500px;
+            max-width: 80%;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,6 +34,9 @@
             <% if(typeof error !== 'undefined') { %>
                 <h1 style="color: red"><%= error %>
             <% } %>
+        </div>
+        <div class="img-error">
+            <img src="<%=img%>" alt="">
         </div>
         </section>
         

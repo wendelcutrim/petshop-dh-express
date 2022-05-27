@@ -3,7 +3,7 @@ const router = express.Router()
 const servicoController = require('../controllers/servicoController');
 
 router.get('/adm/servicos', servicoController.index);
-router.get('/adm/cadastro', servicoController.create);
+router.get('/adm/servicos/cadastro', servicoController.create);
 router.get('/adm/servicos/:id', servicoController.show);
 router.get('/adm/servicos/:id/editar', servicoController.edit);
 router.post('/adm/servicos', servicoController.store);

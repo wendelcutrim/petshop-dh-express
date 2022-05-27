@@ -1,3 +1,6 @@
+const fs = require('fs');
+const { v4: geradorDeId } = require('uuid')
+
 function open() {
     let content = fs.readFileSync("./db.json", "utf8")
     const db = JSON.parse(content); // de texto json para js
@@ -5,7 +8,7 @@ function open() {
 }
 
 function store(db) {
-    content = JSON.stringify(db); // de js para texto json
+    content = JSON.stringify(db, null, 4); // de js para texto json
     fs.writeFileSync("./db.json", content, "utf8")
 }
 

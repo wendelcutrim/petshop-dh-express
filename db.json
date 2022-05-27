@@ -26,5 +26,24 @@
             "descricao": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quaerat."
         }
     ],
-    "pets": []
+    "pets": [
+        {
+            "id": "1",
+            "imagem": "https://i.pinimg.com/736x/f7/33/46/f73346e8aaf923c2fa915ad281ce9753.jpg",
+            "nome": "Shanks",
+            "especie": "Gato"
+        },
+        {
+            "id": "2",
+            "imagem": "https://www.infoescola.com/wp-content/uploads/2010/08/doberman_223996249.jpg",
+            "nome": "Inuarashi",
+            "especie": "Cachorro"
+        },
+        {
+            "id": "a5c0bf35-9ba2-4258-9d7d-5b843a803f01",
+            "imagem": "https://www.agrosete.com.br/wp-content/uploads/2020/01/como-tratar-de-uma-calopsita-1.jpg",
+            "nome": "Traw Law",
+            "especie": "Calopsita"
+        }
+    ]
 }

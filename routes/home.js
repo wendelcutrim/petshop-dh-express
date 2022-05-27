@@ -6,6 +6,7 @@ router.get('/', homeController.index)
 router.get('/sobre', homeController.sobre)
 router.get('/servicos', homeController.servicos)
 router.get('/login', homeController.login)
+router.get('/contato', homeController.contato)
 
 module.exports = router
 

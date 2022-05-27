@@ -1,4 +1,4 @@
-const Servico = require('../models/servico');
+const Servico = require('../models/servicos');
 
 const homeController = {
     index: (req, res) => {
@@ -13,7 +13,10 @@ const homeController = {
         res.render('home/servicos', { servicos });  
     },
     login: (req, res) => {
-        res.send('Login');
+        res.render('home/login');
+    },
+    contato: (req, res) => {
+        res.render('home/contato')
     }
 }
 

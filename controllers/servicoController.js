@@ -4,7 +4,7 @@ const servicoController = {
     index: (req,res) => {
         const servicos = Servico.findAll();
         console.log(servicos);
-        return res.render('admin/servicos', {servicos});
+        return res.render('adm/servicos', {servicos});
     },
     show: (req, res) => {
         const {id} = req.params;
@@ -12,7 +12,7 @@ const servicoController = {
         if(!servico) {
             return res.send(`Serviço não encontrado`);
         }
-        return res.render('admin/servicos/detalhes', {servico});
+        return res.render('adm/servicos/detalhes', {servico});
     },
     create: (req, res) => {
         return res.render('adm/servicos/cadastro');
@@ -41,6 +41,7 @@ const servicoController = {
         const {id} = req.params;
         const { imagem, nome, preco, ativo, descricao} = req.body;
         const servico = {
+            id,
             imagem,
             nome,
             preco,

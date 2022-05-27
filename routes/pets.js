@@ -2,12 +2,13 @@ const express = require('express')
 const router = express.Router()
 const petController = require('../controllers/petController')
 
-router.get('/pets', petController.index);
-router.get('/pets/:id', petController.show);
-router.post('/pets', petController.create);
-router.put('/pets/:id',petController.update);
-// router.delete('/pets/:id', (req, res) => res.send('Exclusão de pet: ' + req.params.id));
-router.delete('/pets/:id', petController.destroy);
+router.get('/adm/pets', petController.index);
+router.get('/adm/pets/cadastro', petController.create);
+router.post('/adm/pets', petController.store);
+router.get('/adm/pets/:id', petController.show);
+router.get('/adm/pets/:id/editar',petController.edit);
+router.put('/adm/pets/:id',petController.update);
+router.delete('/adm/pets/:id', petController.destroy);
 
 /* 
     URL Base: http://localhost:3000/{nome_da_rota}

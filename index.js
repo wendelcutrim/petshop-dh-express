@@ -16,5 +16,4 @@ app.use(homeRouter);
 app.use(petsRouter);
 app.use(servicosRouter);
 
-
 app.listen(3000, () => console.log('Rodando...'))

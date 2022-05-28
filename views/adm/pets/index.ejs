@@ -19,7 +19,7 @@
         <section class="servicos-lista">
             <div class="container">
                 <h1>Pets</h1>
-                <a href="" class="btn btn-primary mb-5">Cadastrar Pet</a>
+                <a href="/adm/pets/cadastro" class="btn btn-primary mb-5">Cadastrar Pet</a>
                 <table class="table table-dark table-striped table-bordered ">
                     <thead>
                         <tr>
@@ -31,32 +31,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td><img class="thumb"
-                                    src="https://i.pinimg.com/736x/f7/33/46/f73346e8aaf923c2fa915ad281ce9753.jpg"
-                                    alt="Imagem" width="100px" height="100px"></td>
-                            <td>Shanks</td>
-                            <td>Gato</td>
-                            <td>
-                                <a href="" type="button" class="btn btn-primary">Abrir</a>
-                                <a href="" type="button" class="btn btn-secondary">Editar</a>
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td><img class="thumb"
-                                    src="https://www.infoescola.com/wp-content/uploads/2010/08/doberman_223996249.jpg"
-                                    alt="Imagem" width="100px" height="100px"></td>
-                            <td>Inuarashi</td>
-                            <td>Cachorro</td>
-                            <td>
-                                <a href="" type="button" class="btn btn-primary">Abrir</a>
-                                <a href="" type="button" class="btn btn-secondary">Editar</a>
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </td>
-                        </tr>
+                        <% for(let pet of pets) { %>
+                            <tr>
+                                <th scope="row"><%= pet.id %></th>
+                                <td><img class="thumb"
+                                        src="<%= pet.imagem %>"
+                                        alt="Imagem" width="100px" height="100px"></td>
+                                <td><%= pet.nome %></td>
+                                <td><%= pet.especie %></td>
+                                <td>
+                                    <a href="/adm/pets/<%= pet.id %>" type="button" class="btn btn-primary">Abrir</a>
+                                    <a href="/adm/pets/<%= pet.id %>/editar" type="button" class="btn btn-secondary">Editar</a>
+                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                </td>
+                            </tr>
+                        <% } %>
                     </tbody>
                 </table>
 

@@ -1,4 +1,9 @@
 const Servico = require('../models/servicos');
+const storage = require('../config/storage');
+const fs = require('fs');
+const path = require('path');
+
+const uploadAvatar = storage('avatar', '/servicos');
 
 const servicoController = {
     index: (req,res) => {
@@ -18,15 +23,18 @@ const servicoController = {
         return res.render('adm/servicos/cadastro');
     },
     store: (req, res) => {
-        const { imagem, nome, preco, ativo, descricao } = req.body
-        const servico = {
-            nome,
-            imagem: 'https://saude.abril.com.br/wp-content/uploads/2018/12/cachorro-livro.png',
-            preco,
-            ativo: ativo == 'on' ? true : false,
-            descricao
-        };
-        Servico.save(servico);
+        uploadAvatar(req, res, (err) => {
+            const { nome, preco, ativo, descricao } = req.body
+            const servico = {
+                nome,
+                imagem: '/img/servicos' + req.file.filename,
+                preco,
+                ativo: ativo == 'on' ? true : false,
+                descricao
+            };
+            Servico.save(servico);
+        });
+
         return res.redirect('/adm/servicos');
     },
     edit: (req, res) => {
@@ -53,7 +61,17 @@ const servicoController = {
     },
     destroy: (req, res) => {
         const {id} = req.params;
+        const servico = Servico.findById(id);
+        if(!servico) {
+            return res.status(404).render('errors', {error: 'Servico não encontrado'});
+        }
+        
         Servico.delete(id);
+        try {
+            fs.unlinkSync('./public' + servico.imagem);
+        }catch (error){
+            console.log(error);
+        }
         return res.redirect('/adm/servicos')
     }
 };

@@ -21,10 +21,10 @@
 
                 <a href="/adm/pets" class="btn btn-primary mb-2" >Lista de Pets</a>
 
-                <form action="/adm/pets" method="POST">
+                <form action="/adm/pets" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                       <label for="" class="form-label">Imagem</label>
-                      <input type="text" name="imagem" class="form-control" >
+                      <input type="file" name="avatarPet" class="form-control" >
                     </div>
 
                     <div class="mb-3">

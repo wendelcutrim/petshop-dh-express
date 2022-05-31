@@ -18,6 +18,6 @@ app.use(servicosRouter);
 
 
 app.use((req, res, next) => {
-    return res.status(404).render("errors", {error: "Página não encotrada", img: "https://img.freepik.com/vetores-gratis/erro-404-modelo-web-com-caozinho-bonito_23-2147763344.jpg"});
+    return res.status(404).render("errors", {error: "Página não encotrada"});
 })
 app.listen(3000, () => console.log('Rodando...'))

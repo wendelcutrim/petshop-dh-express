@@ -18,11 +18,11 @@
         <section class="servicos-lista">
             <div class="container">
                 <h1>Cadastro de serviços</h1>
-                <a href="/adm/servicos" class="btn btn-primary mb-2" >Lista de serviços</a>
-                <form method="POST" action="/adm/servicos" >
+                <a href="/adm/servicos" class="btn btn-primary mb-2">Lista de serviços</a>
+                <form method="POST" enctype="multipart/form-data" action="/adm/servicos">
                     <div class="mb-3">
-                      <label for="" class="form-label">Imagem</label>
-                      <input type="file" name="imagem" id="imagem" class="form-control" id="">
+                      <label for="avatar" class="form-label">Imagem</label>
+                      <input type="file" name="avatar" id="avatar" class="form-control" id="">
                     </div>
                     <div class="mb-3">
                       <label for="" class="form-label">Nome</label>

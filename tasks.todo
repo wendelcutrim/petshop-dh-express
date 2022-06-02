@@ -1,0 +1,68 @@
+Aula 01/06 - Middlewares:
+
+Para uma melhor experiência com este arquivo, recomendo instalar esta extensão no Vs Code: https://marketplace.visualstudio.com/items?itemName=fabiospampinato.vscode-todo-plus
+
+Para marcar uma task como finalizada, basta clicar na linha da task/checkbox que deseja marcar como concluída e apertar as teclas: ALT + D
+Caso tenha marcado como finalizada por engano, basta realizar o mesmo procedimento que a task/checkbox irá voltar ao estado normal.
+
+Para bom aproveitamento desta aula, será enviado o arquivo: registrar.ejs. Este arquivo deve ser colocado dentro da pasta: view/home:
+
+Em nosso banco de dados, será necessário adicionar uma nova propriedade, a de usuarios:
+    ☐ Acessar o arquivo db.json e criar a propriedade usuarios que será um array de objetos.
+    ☐ Cadastrar um usuário de teste exemplo: 
+        {
+            "id": 1,
+            "nome": "Shanks",
+            "email": "shanks@mail.com",
+            "senha": "123456"
+        }
+O objetivo desta aula será criar middlewares global e por rota, realizando os passos acima, estaremos com a estrutura base pronta para iniciarmos a aula de hoje:
+
+1º Atividade:
+Criar um middleware que será aplicado globalmente para gerar um log de todas as requisições realizadas em nossa aplicação. O nome do log será: requisicoesLog, o seu arquivo deverá ficar salvo dentro da pasta middlewares. No arquivo do log deve conter as seguintes informações:
+    ☐ Criar a pasta middlewares
+    ☐ Dentro da pasta middlewares, criar o arquivo: requisicoesLog.js
+    ☐ Deve capturar o ip do usuário
+    ☐ Deve informar qual foi o metodo HTTP que foi solicitado
+    ☐ Deve informar qual rota foi acessada
+    ☐ Deve informar qual foi o código do status http da requisição.
+    ☐ Deve informar a data e hora que foi realizado esta requisição
+Exemplo de como deve ficar: O usuário IP ::1 solicitou a rota GET /registrar | cod status http: 200 as 2022-06-01T21:15:51.974Z
+
+2º Atividade:
+Nesta atividade iremos utilizar o express validator para realizar as validações do formulário de registro de usuário. Para isso será necessário realizar:
+    ☐ Criar a rota "/registrar" do tipo GET no arquivo de rotas: home.js e dentro do arquivo homeController, criar o método "create" para renderizar a view "registro" quando esta rota for solicitada
+
+    ☐ Dentro do mesmo arquivo de rotas, criar a rota "/registrar" do tipo POST e dentro do arquivo homeController, criar o metodo "store", dentro deste método ocorrerá a lógica para salvar um novo usuário.
+
+    ☐ Testar para ver se está cadastrando um usuário.
+
+    ☐ Instalar o express-validator
+    Link documentação: https://express-validator.github.io/docs/
+
+    ☐ Dentro da pasta middlewares criar o arquivo "validacaoRegistroUsuario.js"
+
+    ☐ Realizar as validações dentro deste middleware
+    O que será validado?:
+        Input nome:
+            ☐ Não pode estar vazio
+            ☐ Deve conter no mínimo 3 caracteres
+        Input email:
+            ☐ Não pode estrar vazio.
+            ☐ Dever ser um e-mail válido
+        Input senha:
+            ☐ Não pode estar vazio
+            ☐ Deve ter no mínimo 3 caracteres
+        Para cada validação, será necessário enviar uma mensagem de erro caso o campo esteja vazio ou não atender os valores mínimos e máximos, exemplos:
+            Input de nome vazio: "Deve preencher o nome"
+            Input de nome contém menos de 3 caracteres: "O nome deve ter pelo menos 3 caracteres"
+
+    ☐ Importar o middleware no arquivo de rotas
+
+    ☐ Proteger as rotas que precisam utilizar esse middleware
+
+    ☐ No controller, realizar a configuração necessária para tratar os erros de validação e enviar para o frontend.
+
+    ☐ Na view registro.ejs realizar a configuração para exibir os erros que estão vindo do backend para que o usuário saiba o que precisa corrigir.
+
+    ☐ Os inputs que passaram na validação, deve exibir o valor que foi passado anteriormente e aprovado na validação, para que o usuário não precise digitar todas as infomrações novamente.

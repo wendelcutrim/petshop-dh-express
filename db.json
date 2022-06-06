@@ -70,24 +70,6 @@
             "email": "wendel@mail.com",
             "senha": "123456",
             "id": "7228ee08-496b-49fb-bf6a-a5c8a90465e4"
-        },
-        {
-            "id": "a475699a-dc82-4b90-a4d5-ae6bf3b8f69a",
-            "nome": "Teste2",
-            "email": "teste2@mail.com",
-            "senha": "123456"
-        },
-        {
-            "id": "53a84a18-03fe-4897-bf66-ea846e43bc4d",
-            "nome": "teste3",
-            "email": "teste3@mail.com",
-            "senha": "123456"
-        },
-        {
-            "id": "1fb3b77b-09e7-40c6-afba-3e911c56059d",
-            "nome": "Teste 4",
-            "email": "teste4@mail.com",
-            "senha": "123456"
         }
     ]
 }

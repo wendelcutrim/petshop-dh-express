@@ -1,4 +1,8 @@
-const Usuario = require('../models/usuario');
+/* const Usuario = require('../models/usuario'); */
+/* const Servico = require('../models/servico'); */
+const fs = require('fs');
+const {v4: geradorDeId} = require("uuid");
+
 const { check, validationResult, body} = require('express-validator');
 
 const homeController = {
@@ -34,15 +38,26 @@ const homeController = {
         console.log(errors);
 
         if(errors.isEmpty()) {
-            const {nome, email, senha} = req.body;
-            const usuario = {nome, email, senha};
-            Usuario.save(usuario);
+            let content = fs.readFileSync("./db.json", "utf8");
+            const db = JSON.parse(content);
 
-            res.redirect("/adm/servicos");
+            const {nome, email, senha} = req.body;
+            const usuario = { id: geradorDeId(), nome, email, senha};
+
+            /* Usuario.save(usuario); */
+            db.usuarios.push(usuario);
+            content = JSON.stringify(db, null, 4);
+            fs.writeFileSync("./db.json", content, "utf8");
+
+            res.redirect("/adm");
         }
 
         res.render("home/registro", {listaDeErros: errors.mapped(), old: req.body});
 
+    },
+
+    showAdmin: (req, res) => {
+        res.render("adm/")
     }
 
 }

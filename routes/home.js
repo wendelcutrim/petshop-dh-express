@@ -10,6 +10,7 @@ router.get('/login', homeController.login);
 router.get('/contato', homeController.contato);
 router.get('/registrar', homeController.create);
 router.post('/registrar', validacaoRegistroUsuario, homeController.store);
+router.get('/adm', homeController.showAdmin);
 
 
 module.exports = router

@@ -56,6 +56,11 @@ Nesta atividade iremos utilizar o express validator para realizar as validaçõe
         Para cada validação, será necessário enviar uma mensagem de erro caso o campo esteja vazio ou não atender os valores mínimos e máximos, exemplos:
             Input de nome vazio: "Deve preencher o nome"
             Input de nome contém menos de 3 caracteres: "O nome deve ter pelo menos 3 caracteres"
+        
+    Desafio: 
+        Criar um novo input com o name: confirmacaoSenha, através do método cunstom do express validator, validar se o input de senha e confirmação coincidem, caso não seja identicos, retornar a mensagem: "As senhas não conferem:
+            ☐ Criar novo input com o name: confirmacaoSenha
+            ☐ Configurar o método custom para realizar a validação.
 
     ☐ Importar o middleware no arquivo de rotas
 

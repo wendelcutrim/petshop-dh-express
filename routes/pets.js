@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const petController = require('../controllers/petController')
+const petController = require('../controllers/petController');
 
 //Mostra a página inicial dos pets
 router.get('/adm/pets', petController.index);

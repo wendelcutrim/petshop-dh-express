@@ -15,8 +15,17 @@
         .errors h3 {
             color: red;
         }
+
         .erros li {
             color: red;
+        }
+
+        .container form {
+            width: 50%;
+        }
+
+        .container form label {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -30,13 +39,21 @@
            
             <div class="container">
                 <h1>Cadastro de Usuário</h1>
-
-                <div class="errors"></div>
-
+                <div class="errors">
+                    <% if(typeof listaDeErros !== "undefined"){ %>
+                        <h1>Erros</h1>
+                        <ul>
+                            <% for(let error of listaDeErros) { %>
+                                <li><%= error.msg %></li>
+                            <% } %>
+                        </ul>
+                        
+                   <% } %>
+                </div>
                 <form action="/registrar" method="POST">
                     <div class="mb-3">
                       <label for="nome" class="form-label">Nome</label>
-                      <input type="text" name="nome" id="nome" class="form-control" placeholder="Insira o seu nome">
+                      <input type="text" name="nome" id="nome" class="form-control" placeholder="Insira o seu nome" value="<%= locals.old && old.nome%>">
                     </div>
 
                     <div class="mb-3">
@@ -49,11 +66,14 @@
                       <input type="password" name="senha" id="senha" class="form-control"  placeholder="********">
                     </div>
 
+                    <!-- <div class="mb-3">
+                        <label for="confirmacaoSenha" class="form-label">Confirmação da Senha</label>
+                        <input type="password" name="confirmacaoSenha" id="senha" class="form-control"  placeholder="********">
+                      </div> -->
+
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
                   </form>
-
             </div>
-            
         </section>
     </main>
 

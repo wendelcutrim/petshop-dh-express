@@ -1,191 +1,205 @@
 # petshop-dh-express
 
-## Aula 30/05/2022
+## 06/06/2022 - Middlewares
+ 
+Nesta aula foi realizada a explicação e configuração de middlewares global e por rota.
+As atividades estão no arquivo tasks.todo
 
-Nesta aula foi realizada a configuração multer e sua utilização dentro dos Controllers.
+### Middlewares global:
 
-## Instalação do Multer:
-```bash
-npm i multer
-```
-## Configuração do Multer realizada na aula:
--  **Criar** uma **pasta** com o nome **config**:
--  Dentro da pasta **config** criar o arquivo: **storage.js**
+São aqueles que aplicamos dentro do entry point através do método app.use() e que irá capturar todas as rotas ou um grupo específico de rotas.
 
-Após seguir as etapas acima, dentro do arquivo **storage.js**, realizar os seguintes passos:
+**Exemplo:** O middleware de log que realizamos durante a aula para gerar um log de cada rota que foi acessada com algumas informações como ip do usuário, método http, url da rota, código da resposta e a data e hora do acesso.
 
-- Importar o multer
-- Inserir o seguinte script:
-```javascript
-//Criando a variável storage que recebe 2 parâmetros: 
-// - input: Nome do atributo name que será recebido do formulário
-// - path: Caminho da pasta onde será salvo a imagem.
-const storage = (input, path = '') => {
-    //Variável st: Função responsável por informar o caminho de onde a imagem será salva
-    const st = multer.diskStorage({
-        //Caminho onde será salvo a imagem
-        destination: (req, file, cb) => {
-            cb(null, './public/img' + path)
-        },
-        //Método que realizará o nome da imagem, de acordo com a função abaixo, o nome da imagem seguirá o padrão: data e hora atual padrão utc + nome original do arquivo.
-        filename: (req, file, cb) => {
-            cb(null, Date.now() + '-' + file.originalname)
-        }
-    })
-    return multer({ storage: st }).single(input)
-}
+### Middleware por rota
 
-module.exports = storage
-``` 
+São aqueles que aplicamos nas rotas que queremos proteger, por exemplo o middleware de validação de registro do usuário que desenvolvemos durante a aula.
 
-- Exportar a variável storage
+## Express Validator
 
-Ao final, deve chegar no seguinte resuldado:
-```javascript
-/* Pasta: /config/storage.js */
-const multer = require('multer')
+Instalação:
 
-const storage = (input, path = '') => {
-    const st = multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, './public/img' + path)
-        },
-        filename: (req, file, cb) => {
-            cb(null, Date.now() + '-' + file.originalname)
-        }
-    })
-    return multer({ storage: st }).single(input)
-}
-module.exports = storage
-```
+`` npm i express-validator ``
 
-## Utilizando o Multer:
+**Link da documentação:** https://express-validator.github.io/docs/
 
-Para a sua utilização, será necessário importar o arquivo storage no controller.
+### Configuração do middleware de validação
 
-O exemplo a seguir será como utilizar no arquivo: **servicoController.js**
+No arquivo do middleware requerir o express-validator desestruturando o método body.
+`` const {body} = require("express-validator") `` 
 
-- Importar o arquivo storage no controller:
+
+Em seguida criar uma variável que será um array que receberá todas as validações que iremos fazer e exporta-la.
+
+Este array deve receber o método body que deve ser informado como parâmetro o atributo `name`do input que queremos validar e em seguida os métodos de validações do express validator.
+
+Os métodos de validações podem ser verificados através do seguinte link da documentação: https://github.com/validatorjs/validator.js#validators
+
+
+**Exemplo do middleware realizado na aula:**
 
 ```javascript
-const storage = require('../config/storage');
+const { body } = require('express-validator');
+
+const validacaoRegistroUsuario = [
+    body("nome")
+        .notEmpty().withMessage("Deve preencher o nome").bail()
+        .isLength({min: 3, max: 200}).withMessage("O nome deve ter no minimo 3 caracteres"),
+]
+
+module.exports = validacaoRegistroUsuario;
 ```
 
-- Criar uma variável para configurar os métodos do storage sobre qual o nome do input que irá capturar e o destino onde será salvo as imagens.
+### Protegendo as rotas com o middleware
+
+Agora que criamos o array com as validações que queremos realizar, devemos importar este middleware no arquivo de rotas e aplicá-lo na rota que queremos proteger.
+
+**Exemplo realizado em aula**
 
 ```javascript
-const uploadAvatar = storage('avatar', '/servicos');
-//Foi criado a variável uploadAvatar que está executando o método storage do multer e passando os parâmetros:
-/*
-avatar: Nome do input do formulário que irá enviar o arquivo
-/servicos: pasta que será salvo as imagens enviadas pelo formulário.
-*/
+const express = require('express')
+const router = express.Router()
+const homeController = require('../controllers/homeController')
+
+// Importação do middleware
+const validacaoRegistroUsuario = require('../middlewares/validacaoRegistroUsuario'); 
+
+router.get('/', homeController.index)
+router.get('/sobre', homeController.sobre)
+router.get('/servicos', homeController.servicos)
+router.get('/login', homeController.login)
+router.get('/contato', homeController.contato)
+router.get('/registrar', homeController.create)
+
+//Aplicando o middleware na rota que queremos proteger
+router.post('/registrar', validacaoRegistroUsuario, homeController.store)
+
+module.exports = router
 ```
 
-Após realizar o passo acima, devemos chamar a função uploadAvatar dentro do método store, para que os arquivos possam ser salvos corretamente.
+Neste caso após as informações chegar na rota, eles irão entrar no middleware, caso passe na validação, ele será enviado para o controller e será criado o usuário, senão irá gerar um array de errors que deve ser configurado no controller para enviar estes erros para a view. Na view também deve ser configurado para exibir os erros para o client.
+
+### Trabalhando com os erros da Validação.
+
+No controller, devemos requerir o método validationResult do express-validator.
+
+```javascript
+const { validationResult } = require('express-validator');
+```
+
+Em seguida, no método do controller que que está tratando os dados da rota que está sendo utilizando o middleware, devemos criar uma variável de erros para receber o array de erros que não passaram na validação.
 
 ```javascript
 store: (req, res) => {
-        //Chamando a função uploadAvatar
-        uploadAvatar(req, res, (err) => {
-            //Capturando os dados que estão sendo enviados pelo body da requisição
-            const { nome, preco, ativo, descricao } = req.body
-
-            //Criando a variável que irá armazenar os dados recebidos pelo body.
-            const servico = {
-                nome,
-                //Informando onde será salvo a imagem e capturando o nome da imagem que o multer gerou.
-                imagem: '/img/servicos' + req.file.filename,
-                preco,
-                ativo: ativo == 'on' ? true : false,
-                descricao
-            };
-            //Salvando o novo serviço, junto com a imagem
-            Servico.save(servico);
-        });
-        
-        //Redirecionando para a página inicial de serviços, caso dê tudo certo.
-        return res.redirect('/adm/servicos');
-    },
+    let errors = validationResult(req);
+}
 ```
 
-Antes de partimos para a configuração do formulário no arquivo da view, será necessário criar uma pasta com o mesmo nome que passamos como 2º parâmetro na função **uploadAvatar** que está executando o método storage do multer.
+Agora, toda a lógica que estava configurada para cadastrar o usuário no banco de dados, deve ser colocada dentro de um **if** o parâmetro deste if deve ser: ***Verificar se a variável de errors está vazia*** com o método **isEmpty()** do express-validator.
 
-Como o nome deste parâmetro foi: **/servicos** dentro da pasta: **public/img** devemos criar uma nova pasta com o nome **servicos**
+Caso esteja vazia, ele deixa criar o usuário, senão, retorna para a view de registro, passando os erros que foram encontrados.
 
-Ao final, deve chegar no seguinte resultado:
-``/public/img/servicos`` 
-
-Agora, para que o método store possa funcionar corretamente será necessário realizar algumas alterações no formulário de envio. Precisamos informar que este formulário também será capaz de enviar arquivos. Para realizar essa configuração basta:
-
-- Abrir a view responsável por realizar o cadastro do serviço: **/views/adm/servicos/cadastro.ejs**
-
-- Na tag **form** do formulário devemos inserir um novo atributo além do action e method, este novo atributo será o: ``enctype="multipart/form-data"``
-
-Feito isso o resultado final do form será:
-```html
-<form method="POST" enctype="multipart/form-data" action="/adm/servicos">
-   <div class="mb-3">
-      <label for="avatar" class="form-label">Imagem</label>
-      <input type="file" name="avatar" id="avatar" class="form-control" id="">
-   </div>
-   <div class="mb-3">
-      <label for="" class="form-label">Nome</label>
-      <input type="text" name="nome" id="nome" class="form-control" id="">
-   </div>
-   <div class="mb-3">
-      <label for="" class="form-label">Preço</label>
-      <input type="number" name="preco" class="form-control" id="" >
-   </div>
-   <div class="mb-3 form-check">
-      <input name="ativo" type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" name="ativo" for="exampleCheck1">Ativo</label>
-   </div>
-   <div class="mb-3">
-      <textarea name="descricao" id="" class="form-control" cols="30" rows="10" placeholder="Descrição do serviço"></textarea>
-   </div>
-   <button type="submit" class="btn btn-primary">Salvar</button>
-</form>
-```
-
-Agora o nosso formulário está preparado para enviar arquivos e o nosso controller está pronto para capturar estas informações, salvar no banco de dados e renderizar na view as informações do novo produto, junto com a imagem que foi enviada via upload.
-
-## Excluindo uma imagem do servidor
-
-Para excluir uma imagem que foi enviada via upload, será necessário alterar o método **destroy** do controller.
-
-Para excluir a imagem, será necessário importar o módulo file system, que é um módulo nativo do node para trabalhar com arquivos, para isso basta fazer a requisição através do comando:
-
-```javascript 
-const fs = require('fs');
-```
-
-Após realizar a requisição do método precisamos mexer no método destroy do controller. Segue abaixo o código comentado:
+Ao mandar renderizar a view no caso de erros, devemos mandar o objeto do render com 2 propriedes: Os erros que foram gerados e o valor antigo dos dados que recebemos do req.body
 
 ```javascript
-destroy: (req, res) => {
-        //Reconhecendo o id do serviço que será deletado que foi enviado pelo parâmetro.
-        const {id} = req.params;
+//Importando o validationResut
+const { validationResult } = require('express-validator');
 
-        //Procurando no banco de dados o objeto do serviço que tem o id que foi enviado pelo parâmetro.
-        const servico = Servico.findById(id);
+const homeController = {
+    store: (req, res) => {
+    //Gerando o array de erros da validação
+    let errors = validationResult(req);
 
-        //Caso o serviço não exista no banco de dados, o cliente será redirecionado para a página de errors(caso você tenha criado como not-found, redirecione para ela) e enviado o objeto com a propriedade error para ser renderizado a mensagem na página.
-        if(!servico) {
-            return res.status(404).render('errors', {error: 'Servico não encontrado'});
-        }
-        
-        //Caso encontre o serviço, ele será deletado.
-        Servico.delete(id);
+    //Caso o array de erros esteja vazio, será realizado estas isntruções;
+    if(errors.isEmpty()) {
 
-        //Excluíndo do servidor a imagem do serviço que foi deletado.
-        try {
-            fs.unlinkSync('./public' + servico.imagem);
-        }catch (error){
-            console.log(error);
-        }
+        //Criando a variável que irá armazenar os valores do banco de dados json
+        let content = fs.readFileSync("./db.json", "utf8");
 
-        //Redirecinando o cliente para a página inicial de serviços caso tudo ocorra com sucesso.
-        return res.redirect('/adm/servicos')
+        //Convertendo os dados do banco de dados JSON para objetos literal JS
+        const db = JSON.parse(content);
+
+        //Capturando as informações que estão vindo pelo corpo da requisição
+        const { nome, email, senha } = req.body;
+    
+        //Armazenando os dados que estão vindo do corpo da requisição nesta variável e utilizando o uuid para gerar o ID do usuário.
+        const usuario = {id: geradorDeId(), nome, email, senha }
+    
+        //Inserindo a variavel usuario dentro do objeto literal JS do banco de dados
+        db.usuarios.push(usuario);
+
+        //Transformando o objeto literal com as novas infomrações em JSON
+        content = JSON.stringify(db);
+    
+        //Passando as novas informções para o banco de dados
+        fs.writeFileSync("./db.json", content);
+
+        //Redirecionando para a rota de serviços
+        return res.redirect("/adm/servicos");
     }
+
+    //Caso o array de erros estiver com algum dado, será realizada esta instrução. Estamos enviando a lista de erros através da propriedade: listaDeErros e os dados que foram digitado através da variável old.
+    return res.render("home/registro", {listaDeErros: errors.errors, old: req.body})        
+    }
+}
+
+module.exports = homeController
 ```
+
+### Exibindo erros de validação na view
+
+Para exibir os erros na view é bem simples, com o EJS, devemos fazer um if perguntando se o tipo da variável de erros é diferente de **undefined**.
+
+Caso seja, não será exibido os erros, mas caso tenha algum valor, iremos exibir uma lista com os erros percorrendo o array de erros e em cada lista, imprimir o erro.
+
+Lembrando que para recuperar o valor do input que foi enviado anteriormente, será através da variável **old** que o controler nos enviou.
+Este valor deve ser inserido dentro do input através da propriedade **value** e utilizando o EJS perguntar se existe a variável old e qual o seu valor.
+
+```html
+<body>
+    <%- include('../partials/header') %>
+    <main>
+        <section class="servicos-lista">
+        
+            <div class="container">
+                <h1>Cadastro de Usuário</h1>
+                <div class="errors">
+                    <!--Verificando se existe algum erro, caso existir, esta div entrará em ação -->
+                    <% if(typeof listaDeErros !== "undefined"){ %>
+                        <h3>Erros</h3>
+                        <ul>
+                            <!-- Percorrendo o array de erros e imprimir a propriedade msg (é o que configuramos no middleware de verificação através da propriedade .withMessage()) -->
+                            <% for(let error of listaDeErros) { %>
+                            <!-- Caso tiver algum erro, será gerada uma nova lista com estes erros -->
+                                <li><%= error.msg %></li>
+                            <% } %>
+                        </ul>
+                        
+                   <% } %>
+                </div>
+                <form action="/registrar" method="POST">
+                    <div class="mb-3">
+                      <label for="nome" class="form-label">Nome</label>
+                      <input type="text" name="nome" id="nome" class="form-control" placeholder="Insira o seu nome" value="<%= locals.old && old.nome%>"> <!-- No atributo value, estamos utilizando o locals, ele é uma variável global. Estamos perguntando se caso existir a variável old e tiver a propriedade nome, deverá ser impresso aqui senão, o valor será vazio. Assim recuperamos a informação que o usuário tinha digitado anteriormente.-->
+
+                    </div>
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" name="email" id="email" class="form-control" placeholder="seuemail@exemplo.com">
+                    </div>
+                    <div class="mb-3">
+                      <label for="senha" class="form-label">Senha</label>
+                      <input type="password" name="senha" id="senha" class="form-control"  placeholder="********">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                  </form>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+```
+
+
+

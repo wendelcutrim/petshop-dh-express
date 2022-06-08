@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const petController = require('../controllers/petController');
+const verificaSeLogado = require('../middlewares/verificaSeLogado')
 
+router.use(verificaSeLogado)
 //Mostra a página inicial dos pets
 router.get('/adm/pets', petController.index);
 

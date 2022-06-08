@@ -1,0 +1,51 @@
+Aula 08-06-2022 - Session:
+O objetivo desta aula será aprender o processo da criptografia de senhas e proteger todas as rotas que são de administrador como as rotas de servicos e pets para que somente usuários autenticados possam acessar estas rotas.
+
+Para um bom aproveitamento desta aula será necessário:
+    ☐ Dentro da pasta: views/adm criar um arquivo com o nome: index.ejs e inserir o código que se encontra neste repositório: https://github.com/wendelcutrim/petshop-dh-express/blob/aula-0606-middlewares/views/adm/index.ejs
+
+    ☐ Dentro da pasta partials, criar uma pasta com o nome adm, criar o arquivo header.ejs e inserir as linhas de código que se encontram neste repositório: https://github.com/wendelcutrim/petshop-dh-express/blob/aula-0606-middlewares/views/partials/adm/header.ejs
+
+    Após criar o header dos arquivos de administrador, será necessário alterar o header de todos os arquivos da pasta pets e servicos que estão dentro da pasta adm para chamar o novo header:
+        ☐ Alterar header de todos os arquivos da pasta servicos: (cadastro, detalhes, editar, index);
+        ☐ Alterar header de todos os arquivos da pasta pets: (cadastro, detalhes, editar, index);
+        *Obs: Como criamos um novo componente do header para as views de adm, será necessário alterar o caminho do include para chegar nessa view.
+
+    Dentro da pasta view/home abrir o arquivo login.ejs:
+        ☐ Dento do arquivo login.ejs, inserir o código que está no seguinte repositório: https://github.com/wendelcutrim/petshop-dh-express/blob/aula-0606-middlewares/views/home/login.ejs
+
+Agora que já estamos com os arquivos base da aula configurado, vamos as atividades:
+
+Atividade 1 - Nesta atividade queremos ver a rota de adm que acabamos de criar a view, para isso será necessário criar esta rota:
+    ☐ Dentro do arquivo rotas/home.js criar a rota "/adm" to tipo GET.
+    ☐ Dentro do arquivo homeController.js criar o método showAdm e sua resposta deve ser renderizar o arquivo index.ejs da pasta adm.
+    ☐ Acessar a rota localhost:3000/adm para verificar se está funcionando.
+
+Atividade 2 - Criptografando senhas. Ao cadastrar um novo usuário no nosso sistema, esta sendo salvo no banco de dados a senha que ele informou no cadastro, agora queremos deixar essa informação sigilosa criptografada. Para isso será necessário:
+    ☐ Instalar o bcryptjs
+    ☐ No método store do arquivo homeController, alterar a sua lógica criptografar a senha do usuário e salvar no banco de dados a senha criptografada do novo usuário. 
+
+Atividade 3 - Fazendo login. Queremos que os usuários que foram cadastrados sejam redirecionados para a rota /adm para exibir o menu principal de administradores da nossa aplicação, para isso será necessário:
+    ☐ Criar a rota "/login" do tipo POST
+    ☐ Criar a propriedade postLogin no arquivo homeController e configurar a lógica para procurar o usuário no banco de dados.
+    ☐ Criar condição para que caso o usuário não seja encontrado no banco de dados, seja renderizada a view de login e enviar uma variável com o nome error com a seguinte mensagem: Email ou senha estão incorretos ou não existe
+    ☐ Criar condição para validar se a senha que o usuário digitou confere com a que está salvo no banco de dados, caso não esteja, deve seguir a mesma lógica da etapa anterior, ser renderizada a view de login com a variável error e a seguinte mensagem: Email ou senha estão incorretos ou não existe.
+    ☐ Os erros devem ser imprimido na view de login para o usuário dentro da div com a classe errors e o email que foi digitado deve ser recuperado no input. 
+     *Dica: Lembra como faz isso? Realizamos na validação de registro de usuário através da variável locals...
+    ☐ Caso passe nas condições, o usuário logado deve ser redirecionado para a rota da página inicial de administradores do sistema: "/adm"
+
+Atividade 4 - Implementando a seção. Queremos que somente os usuários logados agora, possam acessar as rotas de administrador, para isso será necessário:
+    ☐ Instalar o express-session
+    ☐ Configurar o express-session
+    ☐ No método postLogin do arquivo homeController, caso o usuário passe nas condições, salvar os dados do usuário, dentro da session (req.session.usuario)
+    ☐ Criar middleware de verificação
+    ☐ No middleware de verificação, caso o usuário não esteja logado, deve ser redirecionado para a rota de login
+    ☐ Proteger as rotas que precisam estar autenticados.
+
+Atividade 5 - Exibindo o nome do usuário logado no header. Queremos que no arquivo do header de administrador, seja exibido o nome do usuário que esteja logado, para isso será necessário:
+    ☐ Passar os dados da session do usuário para a variável locals, podemos fazer isso no middleware que verifica se o usuário está logado.
+    ☐ Dentro da pasta views/partials/adm no arquivo header.ejs, configurar para exibir o nome do usuário que está autenticado.
+
+Desafio - Destruindo uma seção (logout). Queremos que quando o usuário clicar no botão de sair a session seja destruida, fazendo com que quando ele tentar acessar uma rota de administrador, seja necessário realizar um login. Para isso será necessário:
+    ☐ Criar a rota "/logout" no arquivo de rotas home.js
+    ☐ No homeController.js criar o método logout e como resposta deve destruir esta session e redirecionar o usuário para a rota "/login" (Pesquisar na documentação do express-validator ou express como destruir uma session).

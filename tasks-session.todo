@@ -1,0 +1,13 @@
+Aula 08-06-2022 - Session:
+O objetivo desta aula será proteger todas as rotas que são de administrador como as rotas de servicos e pets.
+
+Para um bom aproveitamento desta aula será necessário:
+    ☐ Dentro da pasta: views/adm criar um arquivo com o nome: index.ejs e inserir o código que se encontra neste repositório: https://github.com/wendelcutrim/petshop-dh-express/blob/aula-0606-middlewares/views/adm/index.ejs
+
+    ☐ Dentro da pasta partials, criar uma pasta com o nome adm, criar o arquivo header.ejs e inserir as linhas de código que se encontram neste repositório: https://github.com/wendelcutrim/petshop-dh-express/blob/aula-0606-middlewares/views/partials/adm/header.ejs
+
+    Após criar o header dos arquivos de administrador, será necessário alterar o header de todos os arquivos da pasta pets e servicos que estão dentro da pasta adm para chamar o novo header:
+        ☐ Alterar header de todos os arquivos da pasta servicos: (cadastro, detalhes, editar, index);
+        ☐ Alterar header de todos os arquivos da pasta pets: (cadastro, detalhes, editar, index);
+        *Obs: Como criamos um novo componente do header para as views de adm, será necessário alterar o caminho do includ para chegar nessa view.
+    

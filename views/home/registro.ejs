@@ -58,7 +58,7 @@
 
                     <div class="mb-3">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" name="email" id="email" class="form-control" placeholder="seuemail@exemplo.com">
+                      <input type="email" name="email" id="email" class="form-control" placeholder="seuemail@exemplo.com" value="<%= locals.old && old.email%>">
                     </div>
 
                     <div class="mb-3">
@@ -66,10 +66,10 @@
                       <input type="password" name="senha" id="senha" class="form-control"  placeholder="********">
                     </div>
 
-                    <!-- <div class="mb-3">
+                    <div class="mb-3">
                         <label for="confirmacaoSenha" class="form-label">Confirmação da Senha</label>
                         <input type="password" name="confirmacaoSenha" id="senha" class="form-control"  placeholder="********">
-                      </div> -->
+                      </div>
 
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
                   </form>

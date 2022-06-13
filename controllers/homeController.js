@@ -73,6 +73,7 @@ const homeController = {
         } */
 
         req.session.usuario = usuario
+        console.log(req.session);
 
         res.redirect("/adm");
     },

@@ -67,9 +67,15 @@ const homeController = {
         if(!usuario || !bcrypt.compareSync(senha, usuario.senha)) {
             return res.render("home/login", {error: "Email ou senha incorretos ou não existe"});
         }
-
+        req.session.usuario = usuario;
+        console.log(req.session);
         res.redirect("/adm");
 
+    },
+
+    logout: (req, res) => {
+        req.session.destroy(function(err) {console.log(err)});
+        res.redirect("/login");
     }
 }
 

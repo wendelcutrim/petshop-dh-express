@@ -8,7 +8,6 @@ const uploadAvatar = storage('avatar', '/servicos');
 const servicoController = {
     index: (req,res) => {
         const servicos = Servico.findAll();
-        console.log(servicos);
         return res.render('adm/servicos', {servicos});
     },
     show: (req, res) => {
